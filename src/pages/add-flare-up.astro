@@ -39,9 +39,9 @@ const formSchema = z.object({
 	notes: z.string().optional()
 })
 
-const lat = 35.35988956783049
-const lon = -96.9038352014003
-const apikey = '8bc50e7497b4a61bc774b8f560f17530'
+const lat = import.meta.env.LAT
+const lon = import.meta.env.LON
+const apikey = import.meta.env.WEATHER_API_KEY
 
 const getWeather = async () => {
 	const response = await fetch(
