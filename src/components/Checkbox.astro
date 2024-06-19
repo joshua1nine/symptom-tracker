@@ -1,0 +1,16 @@
+---
+import { nanoid } from 'nanoid'
+interface Props {
+	label: string
+	groupName: string
+	value: string
+}
+
+const { label, groupName, value } = Astro.props
+const id = nanoid(6)
+---
+
+<div class="flex items-center gap-2 p-2">
+	<input type="checkbox" id={id} name={groupName} value={value} />
+	<label for={id}>{label}</label>
+</div>
