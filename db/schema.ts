@@ -20,5 +20,7 @@ export const checkIn = sqliteTable('check-in', {
 	sleep: integer('sleep').notNull(),
 	water: text('water').notNull(),
 	emotionalStress: text('emotional-stress').notNull(), // Maybe this should be a boolean?
-	notes: text('notes')
+	notes: text('notes'),
+	airQuality: integer('air-quality'),
+	barometricPressure: integer('barometric-pressure')
 })
