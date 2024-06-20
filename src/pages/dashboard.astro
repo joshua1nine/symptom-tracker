@@ -1,18 +1,17 @@
 ---
 import { db } from '../../db'
 import { checkIn } from '../../db/schema'
+import OnsetTimeBadge from '../components/OnsetTimeBadge.astro'
+import SleepBadge from '../components/SleepBadge.astro'
+import SymtomBadge from '../components/SymtomBadge.astro'
+import WaterBadge from '../components/WaterBadge.astro'
+import BleedingBadge from '../components/BleedingBadge.astro'
 import Layout from '../layouts/Layout.astro'
+import { format } from 'date-fns'
+import StressBadge from '../components/StressBadge.astro'
+import Notes from '../components/Notes.astro'
 
 const healthChecks = await db.select().from(checkIn)
-
-console.log(healthChecks)
-
-const severityColor = (severity: string) => {
-	if (severity === 'no') return 'bg-gray-200 text-gray-800'
-	if (severity === 'mild') return 'bg-yellow-200 text-yellow-800'
-	if (severity === 'moderate') return 'bg-orange-200 text-orange-800'
-	if (severity === 'severe') return 'bg-red-200 text-red-800'
-}
 ---
 
 <Layout title="Welcome to Symptom Tracker">
@@ -21,127 +20,29 @@ const severityColor = (severity: string) => {
 			<a class="block" href="/">Back</a>
 			<h1 class="text-4xl font-bold">Dashboard</h1>
 		</header>
-		<div class="flex flex-wrap gap-4">
+		<div class="flex flex-wrap justify-center gap-4">
 			{
 				healthChecks.map((hc) => (
 					<div
-						class="space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
+						class="max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
 						id={hc.id.toString()}
 					>
-						<h2 class="text-lg font-bold">{hc.createdAt}</h2>
+						<h2 class="text-lg font-bold">{format(hc.createdAt, 'MMM do YYY')}</h2>
 						<ul class="space-y-2">
-							<li class="flex items-center justify-between">
-								<span>Joint Pain:</span>
-								<span
-									class={`${severityColor(hc.jointPain)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.jointPain}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>hemiplegia:</span>
-								<span
-									class={`${severityColor(hc.hemiplegia)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.hemiplegia}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Fatigue:</span>
-								<span
-									class={`${severityColor(hc.fatigue)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.fatigue}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Light Sensitivity:</span>
-								<span
-									class={`${severityColor(hc.lightSensitivity)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.lightSensitivity}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Numbness/Tingling:</span>
-								<span
-									class={`${severityColor(hc.numbnessTingling)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.numbnessTingling}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Brain Fog</span>
-								<span
-									class={`${severityColor(hc.brainFog)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.brainFog}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Facial Pain</span>
-								<span
-									class={`${severityColor(hc.facialPain)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.facialPain}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Muscle Spasms</span>
-								<span
-									class={`${severityColor(hc.muscleSpasms)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
-								>
-									{hc.muscleSpasms}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Onset Time</span>
-								<span
-									class={`rounded-full bg-sky-200 px-2 py-1 text-sm font-bold capitalize text-sky-800`}
-								>
-									{hc.onsetTime}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Sleep</span>
-								<span
-									class={`rounded-full bg-sky-200 px-2 py-1 text-sm font-bold capitalize text-sky-800`}
-								>
-									{hc.sleep}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Water</span>
-								<span
-									class={`rounded-full bg-sky-200 px-2 py-1 text-sm font-bold capitalize text-sky-800`}
-								>
-									{hc.water}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Bleeding</span>
-								<span
-									class={`rounded-full bg-sky-200 px-2 py-1 text-sm font-bold capitalize text-sky-800`}
-								>
-									{hc.bleeding}
-								</span>
-							</li>
-							<li class="flex items-center justify-between">
-								<span>Emotional Stress</span>
-								<span
-									class={`rounded-full bg-sky-200 px-2 py-1 text-sm font-bold capitalize text-sky-800`}
-								>
-									{hc.emotionalStress}
-								</span>
-							</li>
-							{hc.notes ? (
-								<li class="flex flex-col gap-2">
-									<span>Notes</span>
-									<p class={`rounded-md border border-gray-300 bg-white px-2 text-sm`}>
-										{hc.notes}
-									</p>
-								</li>
-							) : null}
+							<SymtomBadge label="Joint Pain" data={hc.jointPain} />
+							<SymtomBadge label="Hemiplegia" data={hc.hemiplegia} />
+							<SymtomBadge label="Fatigue" data={hc.fatigue} />
+							<SymtomBadge label="Light Sensitivity" data={hc.lightSensitivity} />
+							<SymtomBadge label="Numbness Tingling" data={hc.numbnessTingling} />
+							<SymtomBadge label="Brain Fog" data={hc.brainFog} />
+							<SymtomBadge label="Facial Pain" data={hc.facialPain} />
+							<SymtomBadge label="Muscle Spasms" data={hc.muscleSpasms} />
+							<OnsetTimeBadge label="Onset Time" data={hc.onsetTime} />
+							<SleepBadge label="Sleep" data={hc.sleep} />
+							<WaterBadge label="Water" data={hc.water} />
+							<BleedingBadge label="Bleeding" data={hc.bleeding} />
+							<StressBadge label="Stress" data={hc.emotionalStress} />
+							{hc.notes ? <Notes label="Notes" data={hc.notes} /> : null}
 						</ul>
 					</div>
 				))

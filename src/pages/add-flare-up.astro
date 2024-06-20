@@ -34,7 +34,7 @@ const formSchema = z.object({
 	onsetTime: z.string({ message: 'Please select an onset time' }),
 	bleeding: z.string({ message: 'Please select a bleeding level' }),
 	foods: z.array(z.string()).optional(),
-	sleep: z.string({ message: 'Please give the hours of sleep you had last night' }),
+	sleep: z.number({ message: 'Please give the hours of sleep you had last night' }),
 	water: z.string({ message: 'Please select a water level' }),
 	emotionalStress: z.string({ message: 'Please select one' }),
 	notes: z.string().optional()
@@ -52,16 +52,11 @@ const getWeather = async () => {
 	console.log(data)
 }
 
-// getWeather()
-
-const createdAt = new Date()
-
 if (Astro.request.method === 'POST') {
 	try {
 		const data = await Astro.request.formData()
 
 		const formValues = {
-			createdAt,
 			jointPain: data.get('joint-pain'),
 			hemiplegia: data.get('hemiplegia'),
 			fatigue: data.get('fatigue'),
@@ -73,11 +68,13 @@ if (Astro.request.method === 'POST') {
 			onsetTime: data.get('onset-time'),
 			bleeding: data.get('bleeding'),
 			foods: data.getAll('foods'),
-			sleep: data.get('sleep'),
+			sleep: Number(data.get('sleep')),
 			water: data.get('water'),
 			emotionalStress: data.get('emotional-stress'),
 			notes: data.get('notes')
 		}
+
+		console.log(formValues)
 
 		const result = formSchema.safeParse(formValues)
 		if (!result.success) {

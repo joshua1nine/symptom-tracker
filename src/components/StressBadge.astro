@@ -1,0 +1,32 @@
+---
+interface Props {
+	label: string
+	data: string
+}
+
+const { label, data } = Astro.props
+
+const severityColor = (severity: number) => {
+	switch (true) {
+		case severity === 0:
+			return 'bg-green-200 text-green-800'
+		case severity === 1:
+			return 'bg-yellow-200 text-yellow-800'
+		case severity === 2:
+			return 'bg-orange-200 text-orange-800'
+		case severity === 3:
+			return 'bg-red-200 text-red-800'
+		default:
+			return null
+	}
+}
+---
+
+<li class="flex items-center justify-between">
+	<span>{label}:</span>
+	<span
+		class={`${severityColor(data === 'yes' ? 1 : 0)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
+	>
+		{data}
+	</span>
+</li>

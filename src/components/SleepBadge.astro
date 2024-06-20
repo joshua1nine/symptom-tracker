@@ -1,0 +1,29 @@
+---
+interface Props {
+	label: string
+	data: number
+}
+
+const { label, data } = Astro.props
+const sleepColor = (sleep: number) => {
+	switch (true) {
+		case sleep >= 1 && sleep <= 2:
+			return 'bg-red-200 text-red-800'
+		case sleep >= 3 && sleep <= 4:
+			return 'bg-orange-200 text-orange-800'
+		case sleep >= 5 && sleep <= 6:
+			return 'bg-yellow-200 text-yellow-800'
+		case sleep >= 7:
+			return 'bg-green-200 text-green-800'
+		default:
+			return null
+	}
+}
+---
+
+<li class="flex items-center justify-between">
+	<span>{label}</span>
+	<span class={`${sleepColor(data)} rounded-full px-2 py-1 text-sm font-bold capitalize`}>
+		{data}
+	</span>
+</li>

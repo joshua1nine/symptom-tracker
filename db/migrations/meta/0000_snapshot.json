@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a2102d96-530c-455f-9b85-32fd4371741f",
+  "id": "a620622e-66b5-44c4-ba3e-de558f0ed248",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "check-in": {
@@ -101,7 +101,7 @@
         },
         "sleep": {
           "name": "sleep",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

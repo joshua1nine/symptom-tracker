@@ -12,7 +12,7 @@ CREATE TABLE `check-in` (
 	`onset-time` text NOT NULL,
 	`bleeding` text NOT NULL,
 	`foods` text,
-	`sleep` text NOT NULL,
+	`sleep` integer NOT NULL,
 	`water` text NOT NULL,
 	`emotional-stress` text NOT NULL,
 	`notes` text

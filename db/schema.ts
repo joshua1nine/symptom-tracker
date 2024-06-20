@@ -17,7 +17,7 @@ export const checkIn = sqliteTable('check-in', {
 	onsetTime: text('onset-time').notNull(),
 	bleeding: text('bleeding').notNull(),
 	foods: text('foods'), // This is an array of strings
-	sleep: text('sleep').notNull(),
+	sleep: integer('sleep').notNull(),
 	water: text('water').notNull(),
 	emotionalStress: text('emotional-stress').notNull(), // Maybe this should be a boolean?
 	notes: text('notes')

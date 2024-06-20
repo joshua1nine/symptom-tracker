@@ -1,0 +1,28 @@
+---
+interface Props {
+	label: string
+	data: string
+}
+
+const { label, data } = Astro.props
+
+const waterColor = (water: string) => {
+	switch (true) {
+		case water === 'tons':
+			return 'bg-green-200 text-green-800'
+		case water === 'some':
+			return 'bg-yellow-200 text-yellow-800'
+		case water === 'none':
+			return 'bg-red-200 text-red-800'
+		default:
+			return null
+	}
+}
+---
+
+<li class="flex items-center justify-between">
+	<span>{label}</span>
+	<span class={`${waterColor(data)} rounded-full px-2 py-1 text-sm font-bold capitalize`}>
+		{data}
+	</span>
+</li>
