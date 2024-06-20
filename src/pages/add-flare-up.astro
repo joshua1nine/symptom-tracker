@@ -74,8 +74,6 @@ if (Astro.request.method === 'POST') {
 			notes: data.get('notes')
 		}
 
-		console.log(formValues)
-
 		const result = formSchema.safeParse(formValues)
 		if (!result.success) {
 			const formattedErrors = result.error.flatten().fieldErrors

@@ -1,6 +1,8 @@
 ---
+import type { HTMLAttributes } from 'astro/types'
+
 import { nanoid } from 'nanoid'
-interface Props {
+interface Props extends HTMLAttributes<'input'> {
 	label: string
 	groupName: string
 	value: string
