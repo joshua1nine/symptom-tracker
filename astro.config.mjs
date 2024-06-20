@@ -6,7 +6,5 @@ import vercel from '@astrojs/vercel/serverless'
 export default defineConfig({
 	integrations: [tailwind()],
 	output: 'server',
-	adapter: vercel({
-		maxDuration: 60
-	})
+	adapter: vercel()
 })
