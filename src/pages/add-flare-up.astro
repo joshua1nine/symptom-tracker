@@ -3,11 +3,12 @@ import Checkbox from '../components/Checkbox.astro'
 import Radio from '../components/Radio.astro'
 import Layout from '../layouts/Layout.astro'
 import { z } from 'zod'
-import { db, Check } from 'astro:db'
+import { db } from '../../db'
+import { checkIn } from '../../db/schema'
 
 let errors = {
 	jointPain: '',
-	hymiplegia: '',
+	hemiplegia: '',
 	fatigue: '',
 	lightSensitivity: '',
 	numbnessTingling: '',
@@ -23,7 +24,7 @@ let errors = {
 
 const formSchema = z.object({
 	jointPain: z.string({ message: 'Please select a joint pain level' }),
-	hymiplegia: z.string(),
+	hemiplegia: z.string(),
 	fatigue: z.string({ message: 'Please select a fatigue level' }),
 	lightSensitivity: z.string({ message: 'Please select a light sensitivity level' }),
 	numbnessTingling: z.string({ message: 'Please select a numbness/tingling level' }),
@@ -62,7 +63,7 @@ if (Astro.request.method === 'POST') {
 		const formValues = {
 			createdAt,
 			jointPain: data.get('joint-pain'),
-			hymiplegia: data.get('hymiplegia'),
+			hemiplegia: data.get('hemiplegia'),
 			fatigue: data.get('fatigue'),
 			lightSensitivity: data.get('light-sensitivity'),
 			numbnessTingling: data.get('numbness-tingling'),
@@ -97,9 +98,9 @@ if (Astro.request.method === 'POST') {
 				foods = result.data.foods.join(', ')
 				console.log(foods)
 			}
-			await db.insert(Check).values({
+			await db.insert(checkIn).values({
 				jointPain: result.data.jointPain,
-				hymiplegia: result.data.hymiplegia,
+				hemiplegia: result.data.hemiplegia,
 				fatigue: result.data.fatigue,
 				lightSensitivity: result.data.lightSensitivity,
 				numbnessTingling: result.data.numbnessTingling,
@@ -138,12 +139,12 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="joint-pain" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
-					<legend>Did you experience any <b>hymiplegia</b> symptoms today</legend>
-					{errors.hymiplegia && <p class="text-sm text-red-500">{errors.hymiplegia}</p>}
-					<Radio groupName="hymiplegia" value="no" label="No" />
-					<Radio groupName="hymiplegia" value="mild" label="Mild" />
-					<Radio groupName="hymiplegia" value="moderate" label="Moderate" />
-					<Radio groupName="hymiplegia" value="severe" label="Severe" />
+					<legend>Did you experience any <b>hemiplegia</b> symptoms today</legend>
+					{errors.hemiplegia && <p class="text-sm text-red-500">{errors.hemiplegia}</p>}
+					<Radio groupName="hemiplegia" value="no" label="No" />
+					<Radio groupName="hemiplegia" value="mild" label="Mild" />
+					<Radio groupName="hemiplegia" value="moderate" label="Moderate" />
+					<Radio groupName="hemiplegia" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Fatigue</b> today</legend>

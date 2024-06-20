@@ -1,8 +1,9 @@
 ---
-import { db, Check } from 'astro:db'
+import { db } from '../../db'
+import { checkIn } from '../../db/schema'
 import Layout from '../layouts/Layout.astro'
 
-const healthChecks = await db.select().from(Check)
+const healthChecks = await db.select().from(checkIn)
 
 console.log(healthChecks)
 
@@ -38,11 +39,11 @@ const severityColor = (severity: string) => {
 								</span>
 							</li>
 							<li class="flex items-center justify-between">
-								<span>Hymiplegia:</span>
+								<span>hemiplegia:</span>
 								<span
-									class={`${severityColor(hc.hymiplegia)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
+									class={`${severityColor(hc.hemiplegia)} rounded-full px-2 py-1 text-sm font-bold capitalize`}
 								>
-									{hc.hymiplegia}
+									{hc.hemiplegia}
 								</span>
 							</li>
 							<li class="flex items-center justify-between">
