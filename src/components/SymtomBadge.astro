@@ -8,8 +8,6 @@ const { label, data } = Astro.props
 
 const severityColor = (severity: string) => {
 	switch (true) {
-		case severity === 'no':
-			return 'bg-green-200 text-green-800'
 		case severity === 'mild':
 			return 'bg-yellow-200 text-yellow-800'
 		case severity === 'moderate':

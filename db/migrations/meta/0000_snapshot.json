@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a620622e-66b5-44c4-ba3e-de558f0ed248",
+  "id": "d0604105-8ee6-4119-8b92-d4d1e6eb9366",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "check-in": {
@@ -26,70 +26,70 @@
           "name": "joint-pain",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "hemiplegia": {
           "name": "hemiplegia",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "fatigue": {
           "name": "fatigue",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "light-sensitivity": {
           "name": "light-sensitivity",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "numbness-tingling": {
           "name": "numbness-tingling",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "brain-fog": {
           "name": "brain-fog",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "facial-pain": {
           "name": "facial-pain",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "muscle-spasms": {
           "name": "muscle-spasms",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "onset-time": {
           "name": "onset-time",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "bleeding": {
           "name": "bleeding",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "foods": {

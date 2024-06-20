@@ -12,6 +12,8 @@ import StressBadge from '../components/StressBadge.astro'
 import Notes from '../components/Notes.astro'
 
 const healthChecks = await db.select().from(checkIn)
+console.log(healthChecks[0].foods)
+console.log(healthChecks[0].foods?.split(','))
 ---
 
 <Layout title="Welcome to Symptom Tracker">
@@ -29,19 +31,37 @@ const healthChecks = await db.select().from(checkIn)
 					>
 						<h2 class="text-lg font-bold">{format(hc.createdAt, 'MMM do YYY')}</h2>
 						<ul class="space-y-2">
-							<SymtomBadge label="Joint Pain" data={hc.jointPain} />
-							<SymtomBadge label="Hemiplegia" data={hc.hemiplegia} />
-							<SymtomBadge label="Fatigue" data={hc.fatigue} />
-							<SymtomBadge label="Light Sensitivity" data={hc.lightSensitivity} />
-							<SymtomBadge label="Numbness Tingling" data={hc.numbnessTingling} />
-							<SymtomBadge label="Brain Fog" data={hc.brainFog} />
-							<SymtomBadge label="Facial Pain" data={hc.facialPain} />
-							<SymtomBadge label="Muscle Spasms" data={hc.muscleSpasms} />
-							<OnsetTimeBadge label="Onset Time" data={hc.onsetTime} />
+							{hc.jointPain ? <SymtomBadge label="Joint Pain" data={hc.jointPain} /> : null}
+							{hc.hemiplegia ? <SymtomBadge label="Hemiplegia" data={hc.hemiplegia} /> : null}
+							{hc.fatigue ? <SymtomBadge label="Fatigue" data={hc.fatigue} /> : null}
+							{hc.lightSensitivity ? (
+								<SymtomBadge label="Light Sensitivity" data={hc.lightSensitivity} />
+							) : null}
+							{hc.numbnessTingling ? (
+								<SymtomBadge label="Numbness Tingling" data={hc.numbnessTingling} />
+							) : null}
+							{hc.brainFog ? <SymtomBadge label="Brain Fog" data={hc.brainFog} /> : null}
+							{hc.facialPain ? <SymtomBadge label="Facial Pain" data={hc.facialPain} /> : null}
+							{hc.muscleSpasms ? (
+								<SymtomBadge label="Muscle Spasms" data={hc.muscleSpasms} />
+							) : null}
+							{hc.onsetTime ? <OnsetTimeBadge label="Onset Time" data={hc.onsetTime} /> : null}
 							<SleepBadge label="Sleep" data={hc.sleep} />
 							<WaterBadge label="Water" data={hc.water} />
-							<BleedingBadge label="Bleeding" data={hc.bleeding} />
+							{hc.bleeding ? <BleedingBadge label="Bleeding" data={hc.bleeding} /> : null}
 							<StressBadge label="Stress" data={hc.emotionalStress} />
+							{hc.foods ? (
+								<li>
+									<p class="mb-2">Foods:</p>
+									<div class="flex flex-wrap gap-1">
+										{hc.foods.split(',').map((food) => (
+											<span class="rounded-full bg-gray-200 px-2 py-1 text-sm font-bold text-gray-800">
+												{food}
+											</span>
+										))}
+									</div>
+								</li>
+							) : null}
 							{hc.notes ? <Notes label="Notes" data={hc.notes} /> : null}
 						</ul>
 					</div>

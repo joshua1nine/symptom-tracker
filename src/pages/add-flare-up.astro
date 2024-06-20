@@ -23,16 +23,22 @@ let errors = {
 }
 
 const formSchema = z.object({
-	jointPain: z.string({ message: 'Please select a joint pain level' }),
-	hemiplegia: z.string(),
-	fatigue: z.string({ message: 'Please select a fatigue level' }),
-	lightSensitivity: z.string({ message: 'Please select a light sensitivity level' }),
-	numbnessTingling: z.string({ message: 'Please select a numbness/tingling level' }),
-	brainFog: z.string({ message: 'Please select a brain fog level' }),
-	facialPain: z.string({ message: 'Please select a facial pain level' }),
-	muscleSpasms: z.string({ message: 'Please select a muscle spasm level' }),
-	onsetTime: z.string({ message: 'Please select an onset time' }),
-	bleeding: z.string({ message: 'Please select a bleeding level' }),
+	jointPain: z.string({ message: 'Please select a joint pain level' }).optional().nullable(),
+	hemiplegia: z.string().optional().nullable(),
+	fatigue: z.string({ message: 'Please select a fatigue level' }).optional().nullable(),
+	lightSensitivity: z
+		.string({ message: 'Please select a light sensitivity level' })
+		.optional()
+		.nullable(),
+	numbnessTingling: z
+		.string({ message: 'Please select a numbness/tingling level' })
+		.optional()
+		.nullable(),
+	brainFog: z.string({ message: 'Please select a brain fog level' }).optional().nullable(),
+	facialPain: z.string({ message: 'Please select a facial pain level' }).optional().nullable(),
+	muscleSpasms: z.string({ message: 'Please select a muscle spasm level' }).optional().nullable(),
+	onsetTime: z.string({ message: 'Please select an onset time' }).optional().nullable(),
+	bleeding: z.string({ message: 'Please select a bleeding level' }).optional().nullable(),
 	foods: z.array(z.string()).optional(),
 	sleep: z.number({ message: 'Please give the hours of sleep you had last night' }),
 	water: z.string({ message: 'Please select a water level' }),
@@ -49,7 +55,6 @@ const getWeather = async () => {
 		`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
 	)
 	const data = await response.json()
-	console.log(data)
 }
 
 if (Astro.request.method === 'POST') {
@@ -125,76 +130,73 @@ if (Astro.request.method === 'POST') {
 		<h1 class="mb-6 text-4xl font-bold">How did you feel today?</h1>
 		<form method="POST">
 			<div class="space-y-6">
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					{errors.jointPain && <p class="text-sm text-red-500">{errors.jointPain}</p>}
 					<legend>Did you experience any <b>Joint Pain</b> today</legend>
-					<Radio groupName="joint-pain" value="no" label="No" />
 					<Radio groupName="joint-pain" value="mild" label="Mild" />
 					<Radio groupName="joint-pain" value="moderate" label="Moderate" />
 					<Radio groupName="joint-pain" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>hemiplegia</b> symptoms today</legend>
 					{errors.hemiplegia && <p class="text-sm text-red-500">{errors.hemiplegia}</p>}
-					<Radio groupName="hemiplegia" value="no" label="No" />
 					<Radio groupName="hemiplegia" value="mild" label="Mild" />
 					<Radio groupName="hemiplegia" value="moderate" label="Moderate" />
 					<Radio groupName="hemiplegia" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>Fatigue</b> today</legend>
 					{errors.fatigue && <p class="text-sm text-red-500">{errors.fatigue}</p>}
-					<Radio groupName="fatigue" value="no" label="No" />
 					<Radio groupName="fatigue" value="mild" label="Mild" />
 					<Radio groupName="fatigue" value="moderate" label="Moderate" />
 					<Radio groupName="fatigue" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>Light Sensitivity</b> today</legend>
 					{errors.lightSensitivity && <p class="text-sm text-red-500">{errors.lightSensitivity}</p>}
-					<Radio groupName="light-sensitivity" value="no" label="No" />
 					<Radio groupName="light-sensitivity" value="mild" label="Mild" />
 					<Radio groupName="light-sensitivity" value="moderate" label="Moderate" />
 					<Radio groupName="light-sensitivity" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>Numbness/Tingling</b> today</legend>
 					{errors.numbnessTingling && <p class="text-sm text-red-500">{errors.numbnessTingling}</p>}
-					<Radio groupName="numbness-tingling" value="no" label="No" />
 					<Radio groupName="numbness-tingling" value="mild" label="Mild" />
 					<Radio groupName="numbness-tingling" value="moderate" label="Moderate" />
 					<Radio groupName="numbness-tingling" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>Brain Fog</b> today</legend>
 					{errors.brainFog && <p class="text-sm text-red-500">{errors.brainFog}</p>}
-					<Radio groupName="brain-fog" value="no" label="No" />
 					<Radio groupName="brain-fog" value="mild" label="Mild" />
 					<Radio groupName="brain-fog" value="moderate" label="Moderate" />
 					<Radio groupName="brain-fog" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>Facial Pain</b> today</legend>
 					{errors.facialPain && <p class="text-sm text-red-500">{errors.facialPain}</p>}
-					<Radio groupName="facial-pain" value="no" label="No" />
 					<Radio groupName="facial-pain" value="mild" label="Mild" />
 					<Radio groupName="facial-pain" value="moderate" label="Moderate" />
 					<Radio groupName="facial-pain" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Did you experience any <b>Muscle Spasms</b> today</legend>
 					{errors.muscleSpasms && <p class="text-sm text-red-500">{errors.muscleSpasms}</p>}
-					<Radio groupName="muscle-spasms" value="no" label="No" />
 					<Radio groupName="muscle-spasms" value="mild" label="Mild" />
 					<Radio groupName="muscle-spasms" value="moderate" label="Moderate" />
 					<Radio groupName="muscle-spasms" value="severe" label="Severe" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<label for="onset-time">Did you notice a specific time of onset?</label>
 					{errors.onsetTime && <p class="text-sm text-red-500">{errors.onsetTime}</p>}
-					<input type="time" name="onset-time" id="onset-time" />
+					<input
+						class="rounded-md border border-gray-300 bg-white px-2"
+						type="time"
+						name="onset-time"
+						id="onset-time"
+					/>
 				</fieldset>
-				<fieldset>
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Select any potential tigger foods you ate today</legend>
 					<Checkbox groupName="foods" value="Beef" label="Beef" />
 					<Checkbox groupName="foods" value="Chocolate" label="Chocolate" />
@@ -212,38 +214,45 @@ if (Astro.request.method === 'POST') {
 					<Checkbox groupName="foods" value="Soy" label="Soy" />
 					<Checkbox groupName="foods" value="Sugar" label="Sugar" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<label for="sleep">How many hours of sleep did you get last night? 😴</label>
 					{errors.sleep && <p class="text-sm text-red-500">{errors.sleep}</p>}
-					<input type="number" name="sleep" id="sleep" />
+					<input
+						class="rounded-md border border-gray-300 bg-white px-2"
+						type="number"
+						name="sleep"
+						id="sleep"
+					/>
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>How much water have you drank today?</legend>
 					{errors.water && <p class="text-sm text-red-500">{errors.water}</p>}
 					<Radio groupName="water" value="none" label="None 🏜️" />
 					<Radio groupName="water" value="some" label="Some 💧" />
 					<Radio groupName="water" value="tons" label="Tons 💧💧💧" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Are you bleeding?</legend>
 					{errors.bleeding && <p class="text-sm text-red-500">{errors.bleeding}</p>}
 					<Radio groupName="bleeding" value="Spotting" label="Spotting" />
 					<Radio groupName="bleeding" value="Normal" label="Normal" />
 					<Radio groupName="bleeding" value="Heavy" label="Heavy" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<legend>Were you feeling overwhelmed, stressed or sad befor this flare up?</legend>
 					{errors.emotionalStress && <p class="text-sm text-red-500">{errors.emotionalStress}</p>}
-					<div class="flex gap-6">
-						<Radio groupName="emotional-stress" value="Yes" label="Yes" />
-						<Radio groupName="emotional-stress" value="No" label="No" />
-					</div>
+					<Radio groupName="emotional-stress" value="Yes" label="Yes" />
+					<Radio groupName="emotional-stress" value="No" label="No" />
 				</fieldset>
-				<fieldset class="flex flex-col">
+				<fieldset class="flex flex-col space-y-2">
 					<label for="notes">Did anything else of note happen today?</label>
-					<textarea name="notes" id="notes" rows="4"></textarea>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="notes"
+						id="notes"
+						rows="6"></textarea>
 				</fieldset>
-				<button type="submit" class="rounded bg-blue-500 p-2 text-white">Submit</button>
+				<button type="submit" class="w-full rounded bg-blue-500 p-4 text-white">Submit</button>
 			</div>
 		</form>
 	</main>
