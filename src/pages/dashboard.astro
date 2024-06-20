@@ -12,8 +12,6 @@ import StressBadge from '../components/StressBadge.astro'
 import Notes from '../components/Notes.astro'
 
 const healthChecks = await db.select().from(checkIn)
-console.log(healthChecks[0].foods)
-console.log(healthChecks[0].foods?.split(','))
 ---
 
 <Layout title="Welcome to Symptom Tracker">
@@ -29,7 +27,7 @@ console.log(healthChecks[0].foods?.split(','))
 						class="max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
 						id={hc.id.toString()}
 					>
-						<h2 class="text-lg font-bold">{format(hc.createdAt, 'MMM do YYY')}</h2>
+						<h2 class="text-lg font-bold">{format(hc.createdAt, 'MMM do yyy')}</h2>
 						<ul class="space-y-2">
 							{hc.jointPain ? <SymtomBadge label="Joint Pain" data={hc.jointPain} /> : null}
 							{hc.hemiplegia ? <SymtomBadge label="Hemiplegia" data={hc.hemiplegia} /> : null}

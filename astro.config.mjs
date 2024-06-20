@@ -7,6 +7,6 @@ export default defineConfig({
 	integrations: [tailwind()],
 	output: 'server',
 	adapter: vercel({
-		maxDuration: 10
+		maxDuration: 60
 	})
 })
