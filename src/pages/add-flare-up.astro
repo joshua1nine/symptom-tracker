@@ -3,6 +3,7 @@ import Checkbox from '../components/Checkbox.astro'
 import Radio from '../components/Radio.astro'
 import Layout from '../layouts/Layout.astro'
 import { z } from 'zod'
+import { db, Check } from 'astro:db'
 
 let errors = {
 	jointPain: '',
@@ -23,7 +24,6 @@ let errors = {
 const formSchema = z.object({
 	jointPain: z.string({ message: 'Please select a joint pain level' }),
 	hymiplegia: z.string(),
-	// hymiplegia: z.string({ message: 'Please select a hymiplegia level' }),
 	fatigue: z.string({ message: 'Please select a fatigue level' }),
 	lightSensitivity: z.string({ message: 'Please select a light sensitivity level' }),
 	numbnessTingling: z.string({ message: 'Please select a numbness/tingling level' }),
@@ -92,7 +92,29 @@ if (Astro.request.method === 'POST') {
 			}
 		} else {
 			console.log(result.data)
-			return Astro.redirect('/')
+			let foods
+			if (result.data.foods) {
+				foods = result.data.foods.join(', ')
+				console.log(foods)
+			}
+			await db.insert(Check).values({
+				jointPain: result.data.jointPain,
+				hymiplegia: result.data.hymiplegia,
+				fatigue: result.data.fatigue,
+				lightSensitivity: result.data.lightSensitivity,
+				numbnessTingling: result.data.numbnessTingling,
+				brainFog: result.data.brainFog,
+				facialPain: result.data.facialPain,
+				muscleSpasms: result.data.muscleSpasms,
+				onsetTime: result.data.onsetTime,
+				bleeding: result.data.bleeding,
+				foods: foods,
+				sleep: result.data.sleep,
+				water: result.data.water,
+				emotionalStress: result.data.emotionalStress,
+				notes: result.data.notes
+			})
+			return Astro.redirect('/dashboard')
 		}
 	} catch (error) {
 		if (error instanceof Error) {
@@ -113,7 +135,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="joint-pain" value="no" label="No" />
 					<Radio groupName="joint-pain" value="mild" label="Mild" />
 					<Radio groupName="joint-pain" value="moderate" label="Moderate" />
-					<Radio groupName="joint-pain" value="servere" label="Servere" />
+					<Radio groupName="joint-pain" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>hymiplegia</b> symptoms today</legend>
@@ -121,7 +143,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="hymiplegia" value="no" label="No" />
 					<Radio groupName="hymiplegia" value="mild" label="Mild" />
 					<Radio groupName="hymiplegia" value="moderate" label="Moderate" />
-					<Radio groupName="hymiplegia" value="servere" label="Servere" />
+					<Radio groupName="hymiplegia" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Fatigue</b> today</legend>
@@ -129,7 +151,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="fatigue" value="no" label="No" />
 					<Radio groupName="fatigue" value="mild" label="Mild" />
 					<Radio groupName="fatigue" value="moderate" label="Moderate" />
-					<Radio groupName="fatigue" value="servere" label="Servere" />
+					<Radio groupName="fatigue" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Light Sensitivity</b> today</legend>
@@ -137,7 +159,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="light-sensitivity" value="no" label="No" />
 					<Radio groupName="light-sensitivity" value="mild" label="Mild" />
 					<Radio groupName="light-sensitivity" value="moderate" label="Moderate" />
-					<Radio groupName="light-sensitivity" value="servere" label="Servere" />
+					<Radio groupName="light-sensitivity" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Numbness/Tingling</b> today</legend>
@@ -145,7 +167,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="numbness-tingling" value="no" label="No" />
 					<Radio groupName="numbness-tingling" value="mild" label="Mild" />
 					<Radio groupName="numbness-tingling" value="moderate" label="Moderate" />
-					<Radio groupName="numbness-tingling" value="servere" label="Servere" />
+					<Radio groupName="numbness-tingling" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Brain Fog</b> today</legend>
@@ -153,7 +175,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="brain-fog" value="no" label="No" />
 					<Radio groupName="brain-fog" value="mild" label="Mild" />
 					<Radio groupName="brain-fog" value="moderate" label="Moderate" />
-					<Radio groupName="brain-fog" value="servere" label="Servere" />
+					<Radio groupName="brain-fog" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Facial Pain</b> today</legend>
@@ -161,7 +183,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="facial-pain" value="no" label="No" />
 					<Radio groupName="facial-pain" value="mild" label="Mild" />
 					<Radio groupName="facial-pain" value="moderate" label="Moderate" />
-					<Radio groupName="facial-pain" value="servere" label="Servere" />
+					<Radio groupName="facial-pain" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<legend>Did you experience any <b>Muscle Spasms</b> today</legend>
@@ -169,7 +191,7 @@ if (Astro.request.method === 'POST') {
 					<Radio groupName="muscle-spasms" value="no" label="No" />
 					<Radio groupName="muscle-spasms" value="mild" label="Mild" />
 					<Radio groupName="muscle-spasms" value="moderate" label="Moderate" />
-					<Radio groupName="muscle-spasms" value="servere" label="Servere" />
+					<Radio groupName="muscle-spasms" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col">
 					<label for="onset-time">Did you notice a specific time of onset?</label>
