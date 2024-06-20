@@ -127,7 +127,7 @@ if (Astro.request.method === 'POST') {
 
 <Layout title="Welcome to Symptom Tracker">
 	<main class="p-4">
-		<h1 class="mb-6 text-4xl font-bold">How did you feel today?</h1>
+		<h1 class="mb-6 text-3xl font-bold">How did you feel today?</h1>
 		<form method="POST">
 			<div class="space-y-6">
 				<fieldset class="flex flex-col space-y-2">
@@ -215,7 +215,10 @@ if (Astro.request.method === 'POST') {
 					<Checkbox groupName="foods" value="Sugar" label="Sugar" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<label for="sleep">How many hours of sleep did you get last night? 😴</label>
+					<label for="sleep"
+						>How many hours of sleep did you get last night? 😴 <span class="text-red-700">*</span
+						></label
+					>
 					{errors.sleep && <p class="text-sm text-red-500">{errors.sleep}</p>}
 					<input
 						class="rounded-md border border-gray-300 bg-white px-2"
@@ -225,21 +228,25 @@ if (Astro.request.method === 'POST') {
 					/>
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>How much water have you drank today?</legend>
+					<legend>How much water have you drank today? <span class="text-red-700">*</span></legend>
 					{errors.water && <p class="text-sm text-red-500">{errors.water}</p>}
 					<Radio groupName="water" value="none" label="None 🏜️" />
 					<Radio groupName="water" value="some" label="Some 💧" />
 					<Radio groupName="water" value="tons" label="Tons 💧💧💧" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Are you bleeding?</legend>
+					<legend>Are you bleeding? <span class="text-red-700">*</span></legend>
 					{errors.bleeding && <p class="text-sm text-red-500">{errors.bleeding}</p>}
 					<Radio groupName="bleeding" value="Spotting" label="Spotting" />
 					<Radio groupName="bleeding" value="Normal" label="Normal" />
 					<Radio groupName="bleeding" value="Heavy" label="Heavy" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Were you feeling overwhelmed, stressed or sad befor this flare up?</legend>
+					<legend
+						>Were you feeling overwhelmed, stressed or sad befor this flare up? <span
+							class="text-red-700">*</span
+						></legend
+					>
 					{errors.emotionalStress && <p class="text-sm text-red-500">{errors.emotionalStress}</p>}
 					<Radio groupName="emotional-stress" value="Yes" label="Yes" />
 					<Radio groupName="emotional-stress" value="No" label="No" />
@@ -252,7 +259,7 @@ if (Astro.request.method === 'POST') {
 						id="notes"
 						rows="6"></textarea>
 				</fieldset>
-				<button type="submit" class="w-full rounded bg-blue-500 p-4 text-white">Submit</button>
+				<button type="submit" class="w-full rounded bg-pink-600 p-4 text-white">Submit</button>
 			</div>
 		</form>
 	</main>
