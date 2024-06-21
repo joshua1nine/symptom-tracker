@@ -11,7 +11,7 @@ import { format } from 'date-fns'
 import StressBadge from '../components/StressBadge.astro'
 import Notes from '../components/Notes.astro'
 
-// const healthChecks = await db.select().from(checkIn)
+const healthChecks = await db.select().from(checkIn)
 ---
 
 <Layout title="Welcome to Symptom Tracker">
@@ -20,7 +20,7 @@ import Notes from '../components/Notes.astro'
 			<a class="block" href="/">Back</a>
 			<h1 class="text-4xl font-bold">Dashboard</h1>
 		</header>
-		<!-- <div class="flex flex-wrap justify-center gap-4">
+		<div class="flex flex-wrap justify-center gap-4">
 			{
 				healthChecks.map((hc) => (
 					<div
@@ -65,6 +65,6 @@ import Notes from '../components/Notes.astro'
 					</div>
 				))
 			}
-		</div> -->
+		</div>
 	</main>
 </Layout>
