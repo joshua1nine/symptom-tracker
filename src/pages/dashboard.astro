@@ -24,7 +24,7 @@ const healthChecks = await db.select().from(checkIn)
 			{
 				healthChecks.map((hc) => (
 					<div
-						class="max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
+						class="min-w-72 max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
 						id={hc.id.toString()}
 					>
 						<h2 class="text-lg font-bold">{format(hc.createdAt, 'MMM do yyy')}</h2>
