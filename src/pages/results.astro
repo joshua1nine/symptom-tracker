@@ -1,6 +1,7 @@
 ---
 import { db } from '../../db'
 import { checkIn } from '../../db/schema'
+import { desc } from 'drizzle-orm'
 import OnsetTimeBadge from '../components/OnsetTimeBadge.astro'
 import SleepBadge from '../components/SleepBadge.astro'
 import SymtomBadge from '../components/SymtomBadge.astro'
@@ -11,14 +12,14 @@ import { format } from 'date-fns'
 import StressBadge from '../components/StressBadge.astro'
 import Notes from '../components/Notes.astro'
 
-const healthChecks = await db.select().from(checkIn)
+const healthChecks = await db.select().from(checkIn).orderBy(desc(checkIn.createdAt))
 ---
 
 <Layout title="Welcome to Symptom Tracker">
 	<main class="p-4">
 		<header class="mb-4 flex items-center gap-4">
 			<a class="block" href="/">Back</a>
-			<h1 class="text-4xl font-bold">Dashboard</h1>
+			<h1 class="text-4xl font-bold">Results</h1>
 		</header>
 		<div class="flex flex-wrap justify-center gap-4">
 			{

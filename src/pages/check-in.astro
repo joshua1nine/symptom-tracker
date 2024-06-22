@@ -46,16 +46,16 @@ const formSchema = z.object({
 	notes: z.string().optional()
 })
 
-const lat = import.meta.env.LAT
-const lon = import.meta.env.LON
-const apikey = import.meta.env.WEATHER_API_KEY
+// const lat = import.meta.env.LAT
+// const lon = import.meta.env.LON
+// const apikey = import.meta.env.WEATHER_API_KEY
 
-const getWeather = async () => {
-	const response = await fetch(
-		`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
-	)
-	const data = await response.json()
-}
+// const getWeather = async () => {
+// 	const response = await fetch(
+// 		`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apikey}&units=imperial`
+// 	)
+// 	const data = await response.json()
+// }
 
 if (Astro.request.method === 'POST') {
 	try {
@@ -99,6 +99,7 @@ if (Astro.request.method === 'POST') {
 				console.log(foods)
 			}
 			await db.insert(checkIn).values({
+				createdAt: new Date().toISOString(),
 				jointPain: result.data.jointPain,
 				hemiplegia: result.data.hemiplegia,
 				fatigue: result.data.fatigue,
@@ -115,7 +116,7 @@ if (Astro.request.method === 'POST') {
 				emotionalStress: result.data.emotionalStress,
 				notes: result.data.notes
 			})
-			return Astro.redirect('/dashboard')
+			return Astro.redirect('/results')
 		}
 	} catch (error) {
 		if (error instanceof Error) {
@@ -132,55 +133,55 @@ if (Astro.request.method === 'POST') {
 			<div class="space-y-6">
 				<fieldset class="flex flex-col space-y-2">
 					{errors.jointPain && <p class="text-sm text-red-500">{errors.jointPain}</p>}
-					<legend>Did you experience any <b>Joint Pain</b> today</legend>
+					<legend>Did you experience any <b>Joint Pain</b> today?</legend>
 					<Radio groupName="joint-pain" value="mild" label="Mild" />
 					<Radio groupName="joint-pain" value="moderate" label="Moderate" />
 					<Radio groupName="joint-pain" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>hemiplegia</b> symptoms today</legend>
+					<legend>Did you experience any <b>hemiplegia</b> symptoms today?</legend>
 					{errors.hemiplegia && <p class="text-sm text-red-500">{errors.hemiplegia}</p>}
 					<Radio groupName="hemiplegia" value="mild" label="Mild" />
 					<Radio groupName="hemiplegia" value="moderate" label="Moderate" />
 					<Radio groupName="hemiplegia" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>Fatigue</b> today</legend>
+					<legend>Did you experience any <b>Fatigue</b> today?</legend>
 					{errors.fatigue && <p class="text-sm text-red-500">{errors.fatigue}</p>}
 					<Radio groupName="fatigue" value="mild" label="Mild" />
 					<Radio groupName="fatigue" value="moderate" label="Moderate" />
 					<Radio groupName="fatigue" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>Light Sensitivity</b> today</legend>
+					<legend>Did you experience any <b>Light Sensitivity</b> today?</legend>
 					{errors.lightSensitivity && <p class="text-sm text-red-500">{errors.lightSensitivity}</p>}
 					<Radio groupName="light-sensitivity" value="mild" label="Mild" />
 					<Radio groupName="light-sensitivity" value="moderate" label="Moderate" />
 					<Radio groupName="light-sensitivity" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>Numbness/Tingling</b> today</legend>
+					<legend>Did you experience any <b>Numbness/Tingling</b> today?</legend>
 					{errors.numbnessTingling && <p class="text-sm text-red-500">{errors.numbnessTingling}</p>}
 					<Radio groupName="numbness-tingling" value="mild" label="Mild" />
 					<Radio groupName="numbness-tingling" value="moderate" label="Moderate" />
 					<Radio groupName="numbness-tingling" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>Brain Fog</b> today</legend>
+					<legend>Did you experience any <b>Brain Fog</b> today?</legend>
 					{errors.brainFog && <p class="text-sm text-red-500">{errors.brainFog}</p>}
 					<Radio groupName="brain-fog" value="mild" label="Mild" />
 					<Radio groupName="brain-fog" value="moderate" label="Moderate" />
 					<Radio groupName="brain-fog" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>Facial Pain</b> today</legend>
+					<legend>Did you experience any <b>Facial Pain</b> today?</legend>
 					{errors.facialPain && <p class="text-sm text-red-500">{errors.facialPain}</p>}
 					<Radio groupName="facial-pain" value="mild" label="Mild" />
 					<Radio groupName="facial-pain" value="moderate" label="Moderate" />
 					<Radio groupName="facial-pain" value="severe" label="Severe" />
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Did you experience any <b>Muscle Spasms</b> today</legend>
+					<legend>Did you experience any <b>Muscle Spasms</b> today?</legend>
 					{errors.muscleSpasms && <p class="text-sm text-red-500">{errors.muscleSpasms}</p>}
 					<Radio groupName="muscle-spasms" value="mild" label="Mild" />
 					<Radio groupName="muscle-spasms" value="moderate" label="Moderate" />
@@ -197,7 +198,7 @@ if (Astro.request.method === 'POST') {
 					/>
 				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
-					<legend>Select any potential tigger foods you ate today</legend>
+					<legend>Select any potential trigger foods you ate today?</legend>
 					<Checkbox groupName="foods" value="Beef" label="Beef" />
 					<Checkbox groupName="foods" value="Chocolate" label="Chocolate" />
 					<Checkbox groupName="foods" value="Coffee" label="Coffee" />
