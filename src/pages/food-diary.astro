@@ -1,0 +1,216 @@
+---
+import { z } from 'astro/zod'
+import Layout from '../layouts/Layout.astro'
+import { db } from '../../db'
+import { foodDiary } from '../../db/schema'
+
+let errors = {
+	date: '',
+	day: '',
+	food: '',
+	digestion: '',
+	jointPain: '',
+	headache: '',
+	congestion: '',
+	bladder: '',
+	skin: '',
+	energy: '',
+	sleep: '',
+	other: ''
+}
+
+const formSchema = z.object({
+	date: z.string(),
+	day: z.string(),
+	food: z.string().min(1, { message: 'Required' }),
+	digestion: z.string({ message: 'Required' }).optional().nullable(),
+	jointPain: z.string({ message: 'Required' }).optional().nullable(),
+	headache: z.string({ message: 'Required' }).optional().nullable(),
+	congestion: z.string({ message: 'Required' }).optional().nullable(),
+	bladder: z.string({ message: 'Required' }).optional().nullable(),
+	skin: z.string({ message: 'Required' }).optional().nullable(),
+	energy: z.string({ message: 'Required' }).optional().nullable(),
+	sleep: z.string({ message: 'Required' }).optional().nullable(),
+	other: z.string({ message: 'Required' }).optional().nullable()
+})
+
+if (Astro.request.method === 'POST') {
+	try {
+		const data = await Astro.request.formData()
+
+		console.log(data.get('date'))
+		console.log(data.get('day'))
+
+		const formValues = {
+			date: data.get('date'),
+			day: data.get('day'),
+			food: data.get('food'),
+			digestion: data.get('digestion'),
+			jointPain: data.get('jointPain'),
+			headache: data.get('headache'),
+			congestion: data.get('congestion'),
+			bladder: data.get('bladder'),
+			skin: data.get('skin'),
+			energy: data.get('energy'),
+			sleep: data.get('sleep'),
+			other: data.get('other')
+		}
+
+		const result = formSchema.safeParse(formValues)
+		if (!result.success) {
+			const formattedErrors = result.error.flatten().fieldErrors
+
+			console.log(formattedErrors)
+
+			for (const key in formattedErrors) {
+				if (formattedErrors.hasOwnProperty(key)) {
+					// @ts-ignore
+					errors[key] = formattedErrors[key][0]
+				}
+			}
+		} else {
+			await db.insert(foodDiary).values({
+				date: new Date(result.data.date).toISOString(),
+				day: Number(result.data.day),
+				food: result.data.food,
+				digestion: result.data.digestion,
+				jointPain: result.data.jointPain,
+				headache: result.data.headache,
+				congestion: result.data.congestion,
+				bladder: result.data.bladder,
+				skin: result.data.skin,
+				energy: result.data.energy,
+				sleep: result.data.sleep,
+				other: result.data.other
+			})
+			return Astro.redirect('/results')
+		}
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message)
+		}
+	}
+}
+---
+
+<Layout title="Welcome to Symptom Tracker">
+	<main class="p-4">
+		<h1 class="mb-6 text-3xl font-bold">How did you feel today?</h1>
+		<form method="POST">
+			<div class="space-y-6">
+				<fieldset class="flex flex-col space-y-2">
+					<label for="date">Date</label>
+					{errors.date && <p class="text-sm text-red-500">{errors.date}</p>}
+					<input
+						class="rounded-md border border-gray-300 bg-white px-2"
+						type="date"
+						name="date"
+						id="date"
+					/>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="day">Day</label>
+					{errors.day && <p class="text-sm text-red-500">{errors.day}</p>}
+					<input
+						class="rounded-md border border-gray-300 bg-white px-2"
+						type="number"
+						name="day"
+						id="day"
+					/>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="food">Food</label>
+					{errors.food && <p class="text-sm text-red-500">{errors.food}</p>}
+					<select class="rounded-md border border-gray-300 bg-white px-2" name="food" id="food">
+						<option value="">-- Select --</option>
+						<option value="eggs">Eggs</option>
+						<option value="soy">Soy</option>
+						<option value="corn">Corn</option>
+						<option value="peanuts">Peanuts</option>
+						<option value="beef">Beef</option>
+						<option value="pork">Pork</option>
+						<option value="wheat">Wheat</option>
+						<option value="dariy">Dariy</option>
+						<option value="coffee">Coffee</option>
+						<option value="chocolate">Chocolate</option>
+						<option value="barley">Barley</option>
+						<option value="rye">Rye</option>
+					</select>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="digestion">Digestion / Bowel Function</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="digestion"
+						id="digestion"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="jointPain">Joint / Muscle Aches</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="jointPain"
+						id="jointPain"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="headache">Headache / Pressure</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="headache"
+						id="headache"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="congestion">Nasal or Chest Congestion</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="congestion"
+						id="congestion"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="bladder">Kidney / Bladder Function</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="bladder"
+						id="bladder"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="skin">Skin</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="skin"
+						id="skin"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="energy">Energy Level</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="energy"
+						id="energy"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="sleep">Sleep</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="sleep"
+						id="sleep"
+						rows="6"></textarea>
+				</fieldset>
+				<fieldset class="flex flex-col space-y-2">
+					<label for="other">Other Symptoms</label>
+					<textarea
+						class="rounded-md border border-gray-300 bg-white px-2 text-sm"
+						name="other"
+						id="other"
+						rows="6"></textarea>
+				</fieldset>
+				<button type="submit" class="w-full rounded bg-pink-600 p-4 text-white">Submit</button>
+			</div>
+		</form>
+	</main>
+</Layout>

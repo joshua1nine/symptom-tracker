@@ -7,6 +7,7 @@ import { db } from '../../db'
 import { checkIn } from '../../db/schema'
 
 let errors = {
+	date: '',
 	jointPain: '',
 	hemiplegia: '',
 	fatigue: '',
@@ -23,6 +24,7 @@ let errors = {
 }
 
 const formSchema = z.object({
+	date: z.string(),
 	jointPain: z.string({ message: 'Please select a joint pain level' }).optional().nullable(),
 	hemiplegia: z.string().optional().nullable(),
 	fatigue: z.string({ message: 'Please select a fatigue level' }).optional().nullable(),
@@ -62,6 +64,7 @@ if (Astro.request.method === 'POST') {
 		const data = await Astro.request.formData()
 
 		const formValues = {
+			date: data.get('date'),
 			jointPain: data.get('joint-pain'),
 			hemiplegia: data.get('hemiplegia'),
 			fatigue: data.get('fatigue'),
@@ -99,7 +102,7 @@ if (Astro.request.method === 'POST') {
 				console.log(foods)
 			}
 			await db.insert(checkIn).values({
-				createdAt: new Date().toISOString(),
+				date: new Date(result.data.date).toISOString(),
 				jointPain: result.data.jointPain,
 				hemiplegia: result.data.hemiplegia,
 				fatigue: result.data.fatigue,
@@ -131,6 +134,16 @@ if (Astro.request.method === 'POST') {
 		<h1 class="mb-6 text-3xl font-bold">How did you feel today?</h1>
 		<form method="POST">
 			<div class="space-y-6">
+				<fieldset class="flex flex-col space-y-2">
+					<label for="date">Date</label>
+					{errors.date && <p class="text-sm text-red-500">{errors.date}</p>}
+					<input
+						class="rounded-md border border-gray-300 bg-white px-2"
+						type="date"
+						name="date"
+						id="date"
+					/>
+				</fieldset>
 				<fieldset class="flex flex-col space-y-2">
 					{errors.jointPain && <p class="text-sm text-red-500">{errors.jointPain}</p>}
 					<legend>Did you experience any <b>Joint Pain</b> today?</legend>

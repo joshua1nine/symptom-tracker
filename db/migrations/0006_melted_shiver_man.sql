@@ -1,0 +1,1 @@
+ALTER TABLE `check-in` DROP COLUMN `createdAt`;

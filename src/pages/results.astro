@@ -12,7 +12,7 @@ import { format } from 'date-fns'
 import StressBadge from '../components/StressBadge.astro'
 import Notes from '../components/Notes.astro'
 
-const healthChecks = await db.select().from(checkIn).orderBy(desc(checkIn.createdAt))
+const healthChecks = await db.select().from(checkIn).orderBy(desc(checkIn.date))
 ---
 
 <Layout title="Welcome to Symptom Tracker">
@@ -28,7 +28,7 @@ const healthChecks = await db.select().from(checkIn).orderBy(desc(checkIn.create
 						class="min-w-72 max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
 						id={hc.id.toString()}
 					>
-						<h2 class="text-lg font-bold">{format(hc.createdAt, 'MMM do yyy')}</h2>
+						<h2 class="text-lg font-bold">{hc.date && format(hc.date, 'MMM do yyy')}</h2>
 						<ul class="space-y-2">
 							{hc.jointPain ? <SymtomBadge label="Joint Pain" data={hc.jointPain} /> : null}
 							{hc.hemiplegia ? <SymtomBadge label="Hemiplegia" data={hc.hemiplegia} /> : null}
