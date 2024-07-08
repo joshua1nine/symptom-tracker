@@ -1,0 +1,66 @@
+---
+import { db } from '../../../db'
+import { foodDiary } from '../../../db/schema'
+import { desc } from 'drizzle-orm'
+import OnsetTimeBadge from '../../components/OnsetTimeBadge.astro'
+import SleepBadge from '../../components/SleepBadge.astro'
+import SymtomBadge from '../../components/SymtomBadge.astro'
+import WaterBadge from '../../components/WaterBadge.astro'
+import BleedingBadge from '../../components/BleedingBadge.astro'
+import Layout from '../../layouts/Layout.astro'
+import { format } from 'date-fns'
+import StressBadge from '../../components/StressBadge.astro'
+import Notes from '../../components/Notes.astro'
+
+const fd = await db.select().from(foodDiary).orderBy(desc(foodDiary.date))
+---
+
+<Layout title="Welcome to Symptom Tracker">
+	<main class="p-4">
+		<header class="mb-4 items-center gap-4 space-y-4">
+			<a class="block" href="/">Back</a>
+			<h1 class="text-4xl font-bold">Results</h1>
+		</header>
+		<section>
+			<div class="mb-4 flex items-center justify-center gap-4 rounded-lg bg-gray-200 p-1">
+				<a href="/results/symptoms" class="flex-1 p-1 text-center text-lg text-gray-700">Symptoms</a
+				>
+				<a
+					href="/results/food"
+					class="flex-1 rounded bg-white p-2 text-center text-lg font-semibold">Food</a
+				>
+			</div>
+			<div class="flex flex-wrap justify-center gap-4">
+				{
+					fd.map((fd) => (
+						<div
+							class="min-w-72 max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
+							id={fd.id.toString()}
+						>
+							<h2 class="text-sm">{fd.date && format(fd.date, 'MMM do yyy')}</h2>
+							<div class="flex items-center justify-between">
+								<h2 class="text-lg font-bold uppercase">{fd.food}</h2>
+								<h2 class="text-lg font-bold uppercase">Day {fd.day}</h2>
+							</div>
+							<ul class="space-y-2">
+								{fd.digestion ? (
+									<Notes label="Digestion / Bowel Function" data={fd.digestion} />
+								) : null}
+								{fd.jointPain ? <Notes label="Joint / Muscle Aches" data={fd.jointPain} /> : null}
+								{fd.headache ? <Notes label="Headache / Pressure" data={fd.headache} /> : null}
+								{fd.congestion ? (
+									<Notes label="Nasal or Chest Congestion" data={fd.congestion} />
+								) : null}
+								{fd.bladder ? <Notes label="Kidney / Bladder Function" data={fd.bladder} /> : null}
+								{fd.skin ? <Notes label="Skin" data={fd.skin} /> : null}
+								{fd.energy ? <Notes label="Energy Level" data={fd.energy} /> : null}
+								{fd.sleep ? <Notes label="Sleep" data={fd.sleep} /> : null}
+								{fd.other ? <Notes label="Other Symptoms" data={fd.other} /> : null}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</section>
+	</main>
+</Layout>

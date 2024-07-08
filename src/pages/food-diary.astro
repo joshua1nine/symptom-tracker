@@ -83,7 +83,7 @@ if (Astro.request.method === 'POST') {
 				sleep: result.data.sleep,
 				other: result.data.other
 			})
-			return Astro.redirect('/results')
+			return Astro.redirect('/results/food')
 		}
 	} catch (error) {
 		if (error instanceof Error) {
@@ -95,7 +95,7 @@ if (Astro.request.method === 'POST') {
 
 <Layout title="Welcome to Symptom Tracker">
 	<main class="p-4">
-		<h1 class="mb-6 text-3xl font-bold">How did you feel today?</h1>
+		<h1 class="mb-6 text-3xl font-bold">Food DiaryFood</h1>
 		<form method="POST">
 			<div class="space-y-6">
 				<fieldset class="flex flex-col space-y-2">
@@ -113,6 +113,7 @@ if (Astro.request.method === 'POST') {
 					{errors.day && <p class="text-sm text-red-500">{errors.day}</p>}
 					<input
 						class="rounded-md border border-gray-300 bg-white px-2"
+						inputmode="numeric"
 						type="number"
 						name="day"
 						id="day"

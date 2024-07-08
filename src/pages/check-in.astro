@@ -119,7 +119,7 @@ if (Astro.request.method === 'POST') {
 				emotionalStress: result.data.emotionalStress,
 				notes: result.data.notes
 			})
-			return Astro.redirect('/results')
+			return Astro.redirect('/results/symptoms')
 		}
 	} catch (error) {
 		if (error instanceof Error) {

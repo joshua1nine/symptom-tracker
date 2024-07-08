@@ -1,0 +1,80 @@
+---
+import { db } from '../../../db'
+import { checkIn } from '../../../db/schema'
+import { desc } from 'drizzle-orm'
+import OnsetTimeBadge from '../../components/OnsetTimeBadge.astro'
+import SleepBadge from '../../components/SleepBadge.astro'
+import SymtomBadge from '../../components/SymtomBadge.astro'
+import WaterBadge from '../../components/WaterBadge.astro'
+import BleedingBadge from '../../components/BleedingBadge.astro'
+import Layout from '../../layouts/Layout.astro'
+import { format } from 'date-fns'
+import StressBadge from '../../components/StressBadge.astro'
+import Notes from '../../components/Notes.astro'
+
+const healthChecks = await db.select().from(checkIn).orderBy(desc(checkIn.date))
+---
+
+<Layout title="Welcome to Symptom Tracker">
+	<main class="p-4">
+		<header class="mb-4 items-center gap-4 space-y-4">
+			<a class="block" href="/">Back</a>
+			<h1 class="text-4xl font-bold">Results</h1>
+		</header>
+		<section>
+			<div class="mb-4 flex items-center justify-center gap-4 rounded-lg bg-gray-200 p-1">
+				<a
+					href="/results/symptoms"
+					class="flex-1 rounded bg-white p-2 text-center text-lg font-semibold">Symptoms</a
+				>
+				<a href="/results/food" class="flex-1 p-1 text-center text-lg text-gray-700">Food</a>
+			</div>
+			<div class="flex flex-wrap justify-center gap-4">
+				{
+					healthChecks.map((hc) => (
+						<div
+							class="min-w-72 max-w-96 flex-1 space-y-3 rounded-xl border border-gray-100 bg-gray-50 p-2 shadow"
+							id={hc.id.toString()}
+						>
+							<h2 class="text-lg font-bold">{hc.date && format(hc.date, 'MMM do yyy')}</h2>
+							<ul class="space-y-2">
+								{hc.jointPain ? <SymtomBadge label="Joint Pain" data={hc.jointPain} /> : null}
+								{hc.hemiplegia ? <SymtomBadge label="Hemiplegia" data={hc.hemiplegia} /> : null}
+								{hc.fatigue ? <SymtomBadge label="Fatigue" data={hc.fatigue} /> : null}
+								{hc.lightSensitivity ? (
+									<SymtomBadge label="Light Sensitivity" data={hc.lightSensitivity} />
+								) : null}
+								{hc.numbnessTingling ? (
+									<SymtomBadge label="Numbness Tingling" data={hc.numbnessTingling} />
+								) : null}
+								{hc.brainFog ? <SymtomBadge label="Brain Fog" data={hc.brainFog} /> : null}
+								{hc.facialPain ? <SymtomBadge label="Facial Pain" data={hc.facialPain} /> : null}
+								{hc.muscleSpasms ? (
+									<SymtomBadge label="Muscle Spasms" data={hc.muscleSpasms} />
+								) : null}
+								{hc.onsetTime ? <OnsetTimeBadge label="Onset Time" data={hc.onsetTime} /> : null}
+								<SleepBadge label="Sleep" data={hc.sleep} />
+								<WaterBadge label="Water" data={hc.water} />
+								{hc.bleeding ? <BleedingBadge label="Bleeding" data={hc.bleeding} /> : null}
+								<StressBadge label="Stress" data={hc.emotionalStress} />
+								{hc.foods ? (
+									<li>
+										<p class="mb-2">Foods:</p>
+										<div class="flex flex-wrap gap-1">
+											{hc.foods.split(',').map((food) => (
+												<span class="rounded-full bg-gray-200 px-2 py-1 text-sm font-bold text-gray-800">
+													{food}
+												</span>
+											))}
+										</div>
+									</li>
+								) : null}
+								{hc.notes ? <Notes label="Notes" data={hc.notes} /> : null}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</section>
+	</main>
+</Layout>
